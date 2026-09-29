@@ -1,1 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;700&display=swap');
 
+  :root{
+    --plum-deep: #2b1035;
+    --plum: #3d1550;
+    --gold: #e8b64a;
+    --coral: #f2704a;
+    --cream: #fbf3e6;
+    --mint: #7fd9b6;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0; padding:0; height:100%;
+    background: radial-gradient(ellipse at 50% 0%, var(--plum) 0%, var(--plum-deep) 60%, #1a0a22 100%);
+    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .stage{
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 40px 20px;
+    position: relative;
+  }
+
+  /* Confetti */
+  .confetti{
+    position: fixed;
+    top: -10px;
+    border-radius: 2px;
+    opacity: 0.9;
+    animation: fall linear forwards;
+    pointer-events:none;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(540deg); opacity: 0.3; }
+  }
+
+  /* Card */
+  .card{
+    position: relative;
+    width: min(520px, 92vw);
+    background: var(--cream);
+    border-radius: 22px;
+    padding: 56px 40px 44px;
+    text-align: center;
+    box-shadow:
+      0 2px 0 rgba(255,255,255,0.5) inset,
+      0 30px 60px -20px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+    animation: rise 0.9s cubic-bezier(.2,.8,.2,1) 0.15s forwards;
+  }
+  @keyframes rise{
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .card::before{
+    content:"";
+    position:absolute;
+    inset: 10px;
+    border: 1.5px solid rgba(43,16,53,0.14);
+    border-radius: 15px;
+    pointer-events:none;
+  }
+
+  .cake{
+    width: 132px;
+    height: auto;
+    margin: 0 auto 18px;
+    display:block;
+  }
+
+  .flame{
+    transform-origin: 50% 100%;
+    animation: flicker 1.6s ease-in-out infinite;
+  }
+  @keyframes flicker{
+    0%,100%{ transform: scaleY(1) rotate(0deg); }
+    25%{ transform: scaleY(1.08) rotate(-3deg); }
+    50%{ transform: scaleY(0.94) rotate(2deg); }
+    75%{ transform: scaleY(1.05) rotate(-1deg); }
+  }
+
+  .eyebrow{
+    font-family:'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--coral);
+    margin: 0 0 6px;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(38px, 8vw, 54px);
+    line-height: 1.02;
+    color: var(--plum-deep);
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em{
+    font-style: italic;
+    font-weight: 500;
+    color: var(--coral);
+  }
+
+  .message{
+    font-size: 17px;
+    line-height: 1.65;
+    color: #4a3550;
+    max-width: 380px;
+    margin: 0 auto 30px;
+  }
+
+  .divider{
+    width: 56px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin: 0 auto 28px;
+  }
+
+  .name-field{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--plum);
+    margin-bottom: 26px;
+    min-height: 30px;
+  }
+
+  .name-field[contenteditable="true"]{
+    outline: none;
+    border-bottom: 1.5px dashed rgba(61,21,80,0.3);
+    display: inline-block;
+    padding: 0 4px 2px;
+    cursor: text;
+  }
+  .name-field[contenteditable="true"]:focus{
+    border-bottom-color: var(--coral);
+  }
+
+  .blow-btn{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--cream);
+    background: var(--plum-deep);
+    border: none;
+    padding: 14px 30px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+    box-shadow: 0 8px 20px -8px rgba(43,16,53,0.6);
+  }
+  .blow-btn:hover{
+    transform: translateY(-2px);
+    background: var(--coral);
+  }
+  .blow-btn:active{
+    transform: translateY(0);
+  }
+  .blow-btn:disabled{
+    opacity: 0.55;
+    cursor: default;
+    transform: none;
+    background: var(--plum);
+  }
+
+  .wish-reveal{
+    margin-top: 20px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--plum);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .wish-reveal.show{
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="card">
+    <svg class="cake" viewBox="0 0 160 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- candle -->
+      <rect x="76" y="22" width="8" height="26" rx="2" fill="#f2704a"/>
+      <rect x="76" y="22" width="8" height="26" rx="2" fill="url(#stripes)" opacity="0.5"/>
+      <g id="flameGroup" class="flame">
+        <path d="M80 4c5 6 8 11 8 16a8 8 0 1 1-16 0c0-5 3-10 8-16z" fill="#e8b64a"/>
+        <path d="M80 12c3 4 4.5 7 4.5 9.5a4.5 4.5 0 1 1-9 0c0-2.5 1.5-5.5 4.5-9.5z" fill="#fbf3e6"/>
+      </g>
+      <!-- top tier -->
+      <rect x="50" y="48" width="60" height="26" rx="6" fill="#fbf3e6" stroke="#3d1550" stroke-width="2.5"/>
+      <path d="M50 60h60" stroke="#3d1550" stroke-width="1.5" opacity="0.25"/>
+      <!-- bottom tier -->
+      <rect x="30" y="74" width="100" height="42" rx="8" fill="#f2704a" stroke="#3d1550" stroke-width="2.5"/>
+      <path d="M30 96h100" stroke="#3d1550" stroke-width="1.5" opacity="0.2"/>
+      <circle cx="50" cy="90" r="4" fill="#e8b64a"/>
+      <circle cx="80" cy="86" r="4" fill="#fbf3e6"/>
+      <circle cx="110" cy="90" r="4" fill="#7fd9b6"/>
+      <!-- plate -->
+      <ellipse cx="80" cy="118" rx="66" ry="8" fill="#3d1550" opacity="0.15"/>
+    </svg>
+
+    <p class="eyebrow">A little something for you</p>
+    <h1>Happy <em>Birthday</em></h1>
+
+    <div class="divider"></div>
+
+    <p class="message" id="message">Wishing you a day as wonderful as you are — and a year ahead full of good surprises, easy laughter, and everything you're hoping for.</p>
+
+    <button class="blow-btn" id="blowBtn">Blow out the candle 🎂</button>
+    <p class="wish-reveal" id="wishReveal">May every wish you made just now find its way to you. 🎉</p>
+  </div>
+</div>
+
+<script>
+  // Confetti burst
+  function launchConfetti(count){
+    const colors = ['#e8b64a', '#f2704a', '#7fd9b6', '#fbf3e6', '#c98fd6'];
+    for(let i=0;i<count;i++){
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      const size = 6 + Math.random()*6;
+      el.style.width = size + 'px';
+      el.style.height = (size*0.4 + 4) + 'px';
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const duration = 3 + Math.random()*2.5;
+      const delay = Math.random()*0.6;
+      el.style.animationDuration = duration + 's';
+      el.style.animationDelay = delay + 's';
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), (duration+delay)*1000 + 200);
+    }
+  }
+
+  window.addEventListener('load', () => launchConfetti(60));
+
+  // Blow out candle, then make a wish — two-step button
+  const btn = document.getElementById('blowBtn');
+  const flame = document.getElementById('flameGroup');
+  const wishReveal = document.getElementById('wishReveal');
+  let step = 'blow';
+
+  btn.addEventListener('click', () => {
+    if(step === 'blow'){
+      flame.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      flame.style.opacity = '0';
+      flame.style.transform = 'scaleY(0.2) translateY(6px)';
+      btn.textContent = 'Make a wish ✨';
+      launchConfetti(90);
+      step = 'wish';
+    } else if(step === 'wish'){
+      wishReveal.classList.add('show');
+      btn.textContent = 'Wish sent 🎈';
+      btn.disabled = true;
+      launchConfetti(60);
+      step = 'done';
+    }
+  });
+</script>
+
+</body>
+</html>
