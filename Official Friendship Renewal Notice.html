@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Official Friendship Notice</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@600;800&display=swap">
+<style>
+:root{--bg:#ffe9f3;--card:#fff;--ink:#2a1b4d;--pink:#ff4f9a;--lilac:#c9b6ff;--butter:#ffe566;--muted:#6a5a8c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1233;--card:#2b1d4a;--ink:#fff4fb;--muted:#c9b6ff}}
+:root[data-theme="dark"]{--bg:#1d1233;--card:#2b1d4a;--ink:#fff4fb;--muted:#c9b6ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;font-weight:600;min-height:100vh;min-height:100dvh;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;justify-content:center;padding:20px 14px 40px;overflow-x:hidden}
+.paper{width:100%;max-width:460px;background:var(--card);border:4px solid var(--ink);border-radius:22px;padding:26px 22px;box-shadow:8px 8px 0 var(--pink);position:relative;height:fit-content}
+.stamp{position:absolute;top:-16px;right:-8px;background:var(--butter);color:#2a1b4d;border:3px solid #2a1b4d;border-radius:10px;padding:4px 12px;font-family:'Bagel Fat One',cursive;transform:rotate(6deg);font-size:15px}
+h1{font-family:'Bagel Fat One','Trebuchet MS',cursive;font-size:clamp(28px,8vw,38px);line-height:1.05;margin:6px 0 10px;font-weight:400}
+p{line-height:1.5;margin:0 0 14px}
+.muted{color:var(--muted);font-size:14px}
+label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+input{width:100%;font:inherit;font-weight:800;padding:11px 14px;border:3px solid var(--ink);border-radius:12px;background:var(--bg);color:var(--ink);margin-bottom:18px;font-size:16px}
+input:focus-visible,button:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.q{font-family:'Bagel Fat One',cursive;font-size:22px;background:var(--lilac);color:#2a1b4d;border-radius:14px;padding:14px;text-align:center;margin-bottom:18px}
+.btns{display:flex;flex-direction:column;gap:14px;align-items:stretch;min-height:140px}
+button{font:inherit;font-weight:800;font-size:18px;border:3px solid var(--ink);border-radius:14px;padding:14px 22px;min-height:54px;cursor:pointer;color:#2a1b4d;transition:transform .15s}
+#yes{background:var(--pink);color:#fff;box-shadow:4px 4px 0 var(--ink)}
+#yes:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+#no{background:var(--butter);z-index:5}
+#no.run{position:fixed;width:auto;padding:12px 18px}
+ul{padding-left:20px;line-height:1.5;margin:0 0 14px}
+li{margin-bottom:8px}
+#win{display:none}
+.sign{font-family:'Bagel Fat One',cursive;font-size:26px;color:var(--pink);transform:rotate(-3deg);margin-top:10px}
+.bit{position:fixed;top:-30px;font-size:26px;pointer-events:none;animation:fall linear forwards;z-index:9}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+#win.show{display:block;animation:pop .35s ease-out}
+@media (prefers-reduced-motion:reduce){.bit{display:none}#win.show{animation:none}}
+</style>
+</head>
+<body>
+<main class="paper">
+  <div class="stamp">URGENT</div>
+
+  <div id="ask">
+    <h1>Official Notice of Friendship Renewal</h1>
+    <p class="muted">Issued by the Department of Your Best Friend. Not legally binding, emotionally very binding.</p>
+    <p>Our records show you have been an amazing friend for a suspiciously long time. Before we continue, we need your signature.</p>
+    <label for="nm">Your full name (or your dramatic nickname)</label>
+    <input id="nm" placeholder="e.g. Queen of Snacks" maxlength="30" autocomplete="off">
+    <div class="q">Do you agree to keep being my friend forever?</div>
+    <div class="btns">
+      <button id="yes">YES, obviously</button>
+      <button id="no">No</button>
+    </div>
+    <p class="muted" id="hint" style="text-align:center;margin-top:14px"></p>
+  </div>
+
+  <div id="win">
+    <h1>Friendship Approved!</h1>
+    <p>Congratulations, <b id="who">Friend</b>. You are now officially locked in. Terms and conditions:</p>
+    <ul>
+      <li>You will reply to my memes within 24 hours, or send a laughing emoji as a receipt.</li>
+      <li>You will say "you look great" whenever I ask, even before I finish asking.</li>
+      <li>You will share fries without counting them.</li>
+      <li>You will take the photo 47 times until I like it.</li>
+      <li>You will act shocked when I tell the same story again.</li>
+      <li>I will bring snacks and complain about nothing, or maybe everything.</li>
+    </ul>
+    <p class="muted">Cancellation is not possible. We checked. There is no button for it.</p>
+    <div class="sign">signed, your favorite person</div>
+  </div>
+</main>
+
+<script>
+var no=document.getElementById('no'),yes=document.getElementById('yes'),hint=document.getElementById('hint');
+var lines=['No','Are you sure?','Think of the snacks','I will cry (dramatically)','Wrong button, try again','Error 404: No not found','Okay that is just rude'];
+var tries=0,scale=1;
+function dodge(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  tries++;
+  if(tries>=8){no.style.display='none';hint.textContent='The No button has left the chat.';return}
+  no.textContent=lines[Math.min(tries,lines.length-1)];
+  no.classList.add('run');
+  var w=no.offsetWidth,h=no.offsetHeight;
+  no.style.left=Math.max(8,Math.random()*(window.innerWidth-w-16))+'px';
+  no.style.top=Math.max(8,Math.random()*(window.innerHeight-h-16))+'px';
+  yes.style.padding=(14+tries*5)+'px 22px';yes.style.fontSize=(18+tries*2)+'px';
+  if(navigator.vibrate)try{navigator.vibrate(30)}catch(e){}
+  hint.textContent=tries>2?'Only one button seems to be working...':'';
+}
+no.addEventListener('touchstart',dodge,{passive:false});
+no.addEventListener('click',dodge);
+yes.addEventListener('click',function(){
+  var n=document.getElementById('nm').value.trim();
+  document.getElementById('who').textContent=n||'Friend';
+  document.getElementById('ask').style.display='none';
+  document.getElementById('win').classList.add('show');
+  window.scrollTo(0,0);
+  var em=['💖','🎉','🍟','✨','🦄','🍕','💅','🧁'];
+  for(var i=0;i<36;i++){
+    var s=document.createElement('span');s.className='bit';
+    s.textContent=em[i%em.length];
+    s.style.left=Math.random()*100+'vw';
+    s.style.animationDuration=(2+Math.random()*2.5)+'s';
+    s.style.animationDelay=(Math.random()*1.2)+'s';
+    document.body.appendChild(s);
+    setTimeout(function(x){x.remove()},6000,s);
+  }
+});
+</script>
+</body>
+</html>
