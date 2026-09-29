@@ -168,7 +168,7 @@ async function render() {
     const rows = [];
     if (sub.length) {
       const up = sub.slice(0, -1);
-      rows.push(`<li data-n=""><a class="row dir" href="#/${enc(up)}">${ICONS.up}<span class="name">Up one folder</span></a></li>`);
+      rows.push(`<li data-n=""><a class="row dir" href="/${enc(up)}">${ICONS.up}<span class="name">Up one folder</span></a></li>`);
     }
     for (const i of items) {
       if (i.type === 'dir') {
@@ -190,7 +190,7 @@ async function render() {
 
 function renderCrumbs(sub) {
   const root = CONFIG.title || (ctx ? ctx.repo : 'Home');
-  let html = sub.length ? `<a href="#/">${esc(root)}</a>` : `<span class="here">${esc(root)}</span>`;
+  let html = sub.length ? `<a href="/">${esc(root)}</a>` : `<span class="here">${esc(root)}</span>`;
   sub.forEach((s, i) => {
     html += '<span class="sep">/</span>';
     html += i === sub.length - 1
