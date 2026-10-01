@@ -1,0 +1,15 @@
+{
+  "short_name": "StaticPages",
+  "name": "Static Apps",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "572x562",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "StaticPage",
+  "theme_color": "white",
+  "background_color": "white"
+}
