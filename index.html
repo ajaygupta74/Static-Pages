@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Files</title>
+<title>Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -11,13 +11,12 @@
 <style>
   :root {
     --bg: #edf1f5; --surface: #ffffff; --ink: #16202a; --muted: #5b6b7a;
-    --line: #e1e7ed; --hover: #f3f7fa; --accent: #0f766e;
-    --folder: #e3a51d; --file: #8a9bad;
+    --line: #e1e7ed; --hover: #f3f7fa; --accent: #0f766e; --accent-soft: #e0f2f0;
     box-sizing: border-box;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #0d1318; --surface: #151d25; --ink: #e8eef3; --muted: #90a1b1;
-            --line: #24303b; --hover: #1b252f; --accent: #4fd1c5; --folder: #f0b93a; --file: #6f8194; }
+            --line: #24303b; --hover: #1b252f; --accent: #4fd1c5; --accent-soft: #14302f; }
   }
   *, *::before, *::after { box-sizing: inherit; }
   html { background: var(--bg); }
@@ -26,56 +25,57 @@
     font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5; -webkit-font-smoothing: antialiased;
   }
-  main { max-width: 760px; margin: 0 auto; padding: 48px 20px 64px; }
+  main { max-width: 960px; margin: 0 auto; padding: 48px 20px 64px; }
   header { margin-bottom: 24px; }
-  h1 { margin: 0 0 6px; font-size: clamp(1.9rem, 6vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; word-break: break-word; }
-  nav.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; font-size: .95rem; color: var(--muted); }
-  nav.crumbs a { color: var(--accent); text-decoration: none; font-weight: 500; }
-  nav.crumbs a:hover { text-decoration: underline; }
-  nav.crumbs .sep { opacity: .5; }
-  nav.crumbs .here { color: var(--ink); font-weight: 700; }
+  h1 { margin: 0; font-size: clamp(1.9rem, 6vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; word-break: break-word; }
 
   .search {
-    width: 100%; margin-bottom: 14px; padding: 12px 16px; font: inherit; color: var(--ink);
+    width: 100%; margin-bottom: 20px; padding: 12px 16px; font: inherit; color: var(--ink);
     background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
   }
   .search::placeholder { color: var(--muted); }
   .search:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .list { list-style: none; margin: 0; padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
-  .list li + li { border-top: 1px solid var(--line); }
-  .row {
-    display: flex; align-items: center; gap: 14px; padding: 12px 12px;
-    color: inherit; text-decoration: none; border-radius: 10px; transition: background .12s;
-  }
-  .row:hover { background: var(--hover); }
-  .row svg { flex: none; width: 24px; height: 24px; }
-  .row .name { flex: 1; min-width: 0; overflow-wrap: anywhere; font-weight: 500; }
-  .row.dir .name { font-weight: 700; }
-  .row .meta { flex: none; color: var(--muted); font-size: .85rem; }
-  .row .chev { width: 18px; height: 18px; color: var(--muted); }
+  /* Category = a directory that contains other directories */
+  .cat { margin-top: 28px; }
+  .cat .cat { margin-left: 14px; padding-left: 16px; border-left: 2px solid var(--line); }
+  .cat-head { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+  .cat-head .ico { flex: none; width: 32px; height: 32px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); border-radius: 10px; }
+  .cat-head svg { width: 18px; height: 18px; }
+  .cat-head .count { margin-left: auto; font-size: .8rem; font-weight: 500; color: var(--muted); }
+  .cat-head .name { overflow-wrap: anywhere; }
 
-  .state { padding: 36px 16px; text-align: center; color: var(--muted); }
+  /* Card = a directory with no directories inside */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .card {
+    display: flex; flex-direction: column; gap: 12px; padding: 16px; color: inherit; text-decoration: none;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    transition: transform .12s, border-color .12s, background .12s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--hover); }
+  .card .ico { width: 40px; height: 40px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); border-radius: 12px; }
+  .card svg { width: 22px; height: 22px; }
+  .card .name { font-weight: 700; overflow-wrap: anywhere; }
+
+  .state { padding: 48px 16px; text-align: center; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
   .state strong { display: block; color: var(--ink); margin-bottom: 4px; }
   .state code { background: var(--hover); padding: 2px 6px; border-radius: 6px; font-size: .85em; }
   .spinner { width: 22px; height: 22px; margin: 0 auto 10px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } .row { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } .card { transition: none; } .card:hover { transform: none; } }
 
   @media (max-width: 480px) {
     main { padding-top: 32px; }
-    .row .meta { display: none; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .cat .cat { margin-left: 4px; padding-left: 10px; }
   }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1 id="title">Files</h1>
-    <nav class="crumbs" id="crumbs" aria-label="Folder path"></nav>
-  </header>
-  <input class="search" id="search" type="search" placeholder="Filter this folder" aria-label="Filter this folder" hidden>
-  <ul class="list" id="list"></ul>
+  <header><h1 id="title">Home</h1></header>
+  <input class="search" id="search" type="search" placeholder="Filter" aria-label="Filter" hidden>
+  <div id="root"></div>
 </main>
 
 <script>
@@ -87,27 +87,24 @@ const CONFIG = {
   repo: '',           // e.g. 'my-files'
   branch: '',         // blank = the repo's default branch
   baseDir: '',        // folder this page lives in, relative to the repo root ('' = root)
-  hideDotfiles: true, // hide names that start with "."
+  hideDotfiles: true, // hide folders that start with "."
   title: ''           // blank = repo name
 };
 
 const $ = id => document.getElementById(id);
-const here = location.pathname.replace(/[^/]*$/, '');                 // this page's folder URL
+const here = location.pathname.replace(/[^/]*$/, '');
 const segs = here.split('/').filter(Boolean).map(decodeURIComponent);
-const selfName = decodeURIComponent(location.pathname.split('/').pop() || '');
-const cache = new Map();
-let ctx = null;   // { owner, repo, base }
 
 const ICONS = {
-  dir: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--folder)" d="M3 6.5A2.5 2.5 0 0 1 5.5 4h3.9c.6 0 1.2.3 1.6.8L12 6h6.5A2.5 2.5 0 0 1 21 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>',
-  file: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="var(--file)" stroke-width="1.8" stroke-linejoin="round" d="M6.5 3h7L19 8.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-15A1.5 1.5 0 0 1 6.5 3z"/><path fill="none" stroke="var(--file)" stroke-width="1.8" stroke-linejoin="round" d="M13.5 3v5.5H19"/></svg>',
-  up: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 8 6 12l4 4M6 12h9a3 3 0 0 1 3 3v1"/></svg>',
-  chev: '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg>'
+  // card: a leaf directory
+  card: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.4c.6 0 1.2.3 1.6.8L12 7.5h6.5A2.5 2.5 0 0 1 21 10v7.5a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></svg>',
+  // category: a directory that holds other directories
+  cat: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M12 3 3 8l9 5 9-5zM3 12.5l9 5 9-5M3 16.5l9 5 9-5"/></svg>'
 };
 
 const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const enc = arr => arr.map(encodeURIComponent).join('/');
-const fmtSize = n => n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(1) + ' MB';
+const byName = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
 
 function candidates() {
   if (CONFIG.owner && CONFIG.repo) return [{ owner: CONFIG.owner, repo: CONFIG.repo, base: CONFIG.baseDir }];
@@ -119,94 +116,95 @@ function candidates() {
   return list;
 }
 
-async function api(c, path) {
-  const key = c.owner + '/' + c.repo + '/' + path;
-  if (cache.has(key)) return cache.get(key);
-  const url = `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path ? enc(path.split('/')) : ''}` +
-              (CONFIG.branch ? `?ref=${encodeURIComponent(CONFIG.branch)}` : '');
-  const res = await fetch(url, { headers: { Accept: 'application/vnd.github+json' } });
+/* One request returns every folder in the repo */
+async function fetchTree(c) {
+  const ref = CONFIG.branch ? encodeURIComponent(CONFIG.branch) : 'HEAD';
+  const res = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/git/trees/${ref}?recursive=1`,
+                          { headers: { Accept: 'application/vnd.github+json' } });
   if (!res.ok) { const e = new Error('HTTP ' + res.status); e.status = res.status; throw e; }
-  const data = await res.json();
-  if (!Array.isArray(data)) throw new Error('Not a folder');
-  cache.set(key, data);
-  return data;
+  return (await res.json()).tree;
 }
 
-const join = (base, sub) => [base, sub.join('/')].filter(Boolean).join('/');
-
-async function list(sub) {
-  if (ctx) return api(ctx, join(ctx.base, sub));
-  const cands = candidates();
-  if (!cands.length) throw Object.assign(new Error('config'), { status: 'config' });
-  let last;
-  for (const c of cands) {
-    try { const d = await api(c, join(c.base, sub)); ctx = c; return d; }
-    catch (e) { last = e; }
+/* Build a nested folder tree: { name, path:[...], kids: Map } */
+function buildTree(entries, base) {
+  const root = { name: '', path: [], kids: new Map() };
+  const prefix = base ? base.replace(/^\/|\/$/g, '') + '/' : '';
+  for (const e of entries) {
+    if (e.type !== 'tree' || !e.path.startsWith(prefix)) continue;
+    const parts = e.path.slice(prefix.length).split('/').filter(Boolean);
+    if (!parts.length) continue;
+    if (CONFIG.hideDotfiles && parts.some(p => p.startsWith('.'))) continue;
+    let node = root;
+    parts.forEach((p, i) => {
+      if (!node.kids.has(p)) node.kids.set(p, { name: p, path: parts.slice(0, i + 1), kids: new Map() });
+      node = node.kids.get(p);
+    });
   }
-  throw last;
+  return root;
 }
 
-const currentSub = () => decodeURIComponent(location.hash.slice(1)).split('/').filter(s => s && s !== '.' && s !== '..');
+function countLeaves(n) {
+  if (!n.kids.size) return 1;
+  let t = 0; n.kids.forEach(k => t += countLeaves(k));
+  return t;
+}
 
-function setState(html) { $('list').innerHTML = `<li class="state">${html}</li>`; $('search').hidden = true; }
+function renderNode(node) {
+  const kids = [...node.kids.values()].sort(byName);
+  const leaves = kids.filter(k => !k.kids.size);
+  const cats = kids.filter(k => k.kids.size);
+  let html = '';
+  if (leaves.length) {
+    html += '<div class="grid">' + leaves.map(l =>
+      `<a class="card" data-n="${esc(l.name.toLowerCase())}" href="${here}${enc(l.path)}/">` +
+      `<span class="ico">${ICONS.card}</span><span class="name">${esc(l.name)}</span></a>`).join('') + '</div>';
+  }
+  for (const c of cats) {
+    html += `<section class="cat"><h2 class="cat-head"><span class="ico">${ICONS.cat}</span>` +
+            `<span class="name">${esc(c.name)}</span><span class="count">${countLeaves(c)}</span></h2>` +
+            renderNode(c) + '</section>';
+  }
+  return html;
+}
+
+function setState(html) { $('root').innerHTML = `<div class="state">${html}</div>`; $('search').hidden = true; }
 
 async function render() {
-  const sub = currentSub();
-  renderCrumbs(sub);
-  $('search').value = '';
   setState('<div class="spinner"></div>Loading…');
-  try {
-    let items = await list(sub);
-    const idx = items.find(i => i.type === 'file' && /^index\.html?$/i.test(i.name));
-    if (sub.length && idx) { location.replace(here + enc(sub) + '/'); return; }   // let GitHub Pages serve it
-
-    $('title').textContent = sub.length ? sub[sub.length - 1] : (CONFIG.title || ctx.repo);
-    document.title = $('title').textContent;
-    if (CONFIG.hideDotfiles) items = items.filter(i => !i.name.startsWith('.'));
-    if (!sub.length) items = items.filter(i => i.name !== selfName);
-    items.sort((a, b) => (a.type === 'dir' ? 0 : 1) - (b.type === 'dir' ? 0 : 1) || a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
-
-    const rows = [];
-    if (sub.length) {
-      const up = sub.slice(0, -1);
-      rows.push(`<li data-n=""><a class="row dir" href="/${enc(up)}">${ICONS.up}<span class="name">Up one folder</span></a></li>`);
-    }
-    for (const i of items) {
-      if (i.type === 'dir') {
-        rows.push(`<li data-n="${esc(i.name.toLowerCase())}"><a class="row dir" href="#/${enc([...sub, i.name])}">${ICONS.dir}<span class="name">${esc(i.name)}</span>${ICONS.chev}</a></li>`);
-      } else {
-        rows.push(`<li data-n="${esc(i.name.toLowerCase())}"><a class="row" href="${here}${enc([...sub, i.name])}">${ICONS.file}<span class="name">${esc(i.name)}</span><span class="meta">${fmtSize(i.size || 0)}</span></a></li>`);
-      }
-    }
-    if (!items.length) rows.push('<li class="state"><strong>This folder is empty</strong>Add files to the repository and they will appear here.</li>');
-    $('list').innerHTML = rows.join('');
-    $('search').hidden = items.length < 8;
-  } catch (e) {
-    if (e.status === 'config') setState('<strong>Repository not detected</strong>Set <code>owner</code> and <code>repo</code> in the CONFIG block at the top of the script.');
-    else if (e.status === 403) setState('<strong>GitHub rate limit reached</strong>Unauthenticated requests are limited per hour. Try again later.');
-    else if (e.status === 404) setState('<strong>Folder not found</strong>Check the CONFIG values, or the folder may have been removed.');
-    else setState('<strong>Could not load files</strong>Check your connection and reload the page.');
+  const cands = candidates();
+  if (!cands.length) return setState('<strong>Repository not detected</strong>Set <code>owner</code> and <code>repo</code> in the CONFIG block at the top of the script.');
+  let tree, ctx, last;
+  for (const c of cands) {
+    try {
+      const entries = await fetchTree(c);
+      const t = buildTree(entries, c.base);
+      // keep the first candidate that works; prefer one that actually has folders
+      if (!ctx || (!ctx.t.kids.size && t.kids.size)) { ctx = { c, t }; }
+      if (t.kids.size) break;
+    } catch (e) { last = e; }
   }
-}
-
-function renderCrumbs(sub) {
-  const root = CONFIG.title || (ctx ? ctx.repo : 'Home');
-  let html = sub.length ? `<a href="/">${esc(root)}</a>` : `<span class="here">${esc(root)}</span>`;
-  sub.forEach((s, i) => {
-    html += '<span class="sep">/</span>';
-    html += i === sub.length - 1
-      ? `<span class="here">${esc(s)}</span>`
-      : `<a href="#/${enc(sub.slice(0, i + 1))}">${esc(s)}</a>`;
-  });
-  $('crumbs').innerHTML = html;
+  if (!ctx) {
+    if (last && last.status === 403) return setState('<strong>GitHub rate limit reached</strong>Unauthenticated requests are limited per hour. Try again later.');
+    if (last && last.status === 404) return setState('<strong>Repository not found</strong>Check the CONFIG values.');
+    return setState('<strong>Could not load folders</strong>Check your connection and reload the page.');
+  }
+  tree = ctx.t;
+  const name = CONFIG.title || ctx.c.repo;
+  $('title').textContent = name; document.title = name;
+  if (!tree.kids.size) return setState('<strong>No folders yet</strong>Add folders to the repository and they will appear here.');
+  $('root').innerHTML = renderNode(tree);
+  $('search').hidden = document.querySelectorAll('.card').length < 8;
 }
 
 $('search').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase();
-  document.querySelectorAll('#list li[data-n]').forEach(li => { li.hidden = q && !li.dataset.n.includes(q) && li.dataset.n !== ''; });
+  document.querySelectorAll('.card').forEach(c => { c.hidden = !!q && !c.dataset.n.includes(q); });
+  // hide categories with no visible cards (deepest first)
+  [...document.querySelectorAll('section.cat')].reverse().forEach(s => {
+    s.hidden = !!q && !s.querySelector('.card:not([hidden])');
+  });
 });
 
-window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
 render();
 </script>
 </body>
